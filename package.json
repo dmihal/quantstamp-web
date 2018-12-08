@@ -10,9 +10,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "@babel/plugin-proposal-decorators": "^7.2.0",
     "next": "^7.0.2",
     "qs-ui-lib": "^0.0.57-development",
     "react": "^16.6.3",
-    "react-dom": "^16.6.3"
+    "react-dom": "^16.6.3",
+    "web3": "^1.0.0-beta.36"
   }
 }

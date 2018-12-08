@@ -15,6 +15,7 @@ export default ({ children }) => (
         min-height: 100%;
         display: flex;
         flex-direction: row;
+        align-items: flex-start;
       }
       .navColumn {
         flex: 0 0 200px;

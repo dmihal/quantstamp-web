@@ -23,7 +23,7 @@ const NavLink = ({ title, path }) => (
 
 export default () => (
   <nav>
-    <Logo type="product" theme="onLight" productName="Web" />
+    <Logo type="product" theme="onLight" />
     <ul>
       <NavLink title="Start" path="/" />
       <NavLink title="QSP Wallet" path="/qsp" />

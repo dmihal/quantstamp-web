@@ -33,15 +33,25 @@ class Token {
     this.events = eventEmitter;
 
     this.balance = null;
+    this.allowance = null;
   }
 
   async updateBalances() {
-    this.balance = await this.contract.methods.balanceOf(this.userAddress).call();
+    [this.balance, this.allowance] = await Promise.all([
+      this.contract.methods.balanceOf(this.userAddress).call(),
+      this.contract.methods.allowance(this.userAddress, QUANTSTAMP_ADDRESS).call(),
+    ]);
   }
 
   getBalance() {
     return this.balance !== null
       ? (new Web3()).utils.toBN(this.balance).div(DECIMALS).toString()
+      : null;
+  }
+
+  getAllowance() {
+    return this.allowance !== null
+      ? (new Web3()).utils.toBN(this.allowance).div(DECIMALS).toString()
       : null;
   }
 }

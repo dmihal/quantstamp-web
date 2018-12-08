@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
 import Link from 'next/link';
-import { Button, Notification } from 'qs-ui-lib';
+import { Button, Notification, Accordian } from 'qs-ui-lib';
 import Layout from '../layout';
+import AdjustAllowance from '../components/AdjustAllowance';
 import { withToken } from '../context/tokenContext';
 
 const Exchange = ({ name, img, url }) => (
@@ -39,6 +40,10 @@ export default class QSP extends Component {
       <Layout>
         <h1>Quantstamp is powered by the QSP token</h1>
         {this.props.token ? this.tokenDetails() : <p>Loading...</p>}
+        <Accordian title="Adjust Allowance">
+          <AdjustAllowance />
+        </Accordian>
+
         <h3>Buy QSP</h3>
         <p>Need to buy some QSP tokens? You can purchase them on the following exchanges:</p>
         <ul className="exchanges">
@@ -62,8 +67,12 @@ export default class QSP extends Component {
   tokenDetails() {
     const { token } = this.props;
     const balance = token.getBalance();
+    const allowance = token.getAllowance();
     return (
-      <div>Balance: {balance !== null ? balance + ' QSP' : 'Loading...'}</div>
+      <div>
+        <div>Balance: {balance !== null ? balance + ' QSP' : 'Loading...'}</div>
+        <div>Allowance: {allowance !== null ? allowance + ' QSP' : 'Loading...'}</div>
+      </div>
     );
   }
 }

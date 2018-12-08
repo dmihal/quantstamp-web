@@ -27,6 +27,7 @@ export default () => (
     <ul>
       <NavLink title="Start" path="/" />
       <NavLink title="QSP Wallet" path="/qsp" />
+      <NavLink title="New Audit" path="/audit" />
     </ul>
     <style jsx>{`
       nav {

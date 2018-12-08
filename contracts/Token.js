@@ -13,7 +13,10 @@ let contract = null;
 async function getContract(web3, userAddress) {
   const abi = await getABI(TOKEN_ADDRESS);
   contract = new web3.eth.Contract(abi, TOKEN_ADDRESS);
-  const onEvent = event => eventEmitter.emit('event', event);
+  const onEvent = event => {
+    console.log('Event', event);
+    eventEmitter.emit('event', event);
+  };
   contract.events.Transfer({ from: userAddress }).on('data', onEvent);
   contract.events.Approval({ owner: userAddress }).on('data', onEvent);
   return contract;
@@ -53,5 +56,12 @@ class Token {
     return this.allowance !== null
       ? (new Web3()).utils.toBN(this.allowance).div(DECIMALS).toString()
       : null;
+  }
+
+  async setAllowance(newAllowance) {
+    const fullAllowance = (new Web3()).utils.toBN(newAllowance).mul(DECIMALS).toString();
+    const receipt = await this.contract.methods.approve(QUANTSTAMP_ADDRESS, fullAllowance)
+      .send({ from: this.userAddress });
+    return receipt;
   }
 }

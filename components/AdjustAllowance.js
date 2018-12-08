@@ -24,7 +24,10 @@ export default class AdjustAllowance extends Component {
   }
 
   async setAllowance() {
-    this.props.token.setAllowance(this.state.allowance);
+    const receipt = await this.props.token.setAllowance(this.state.allowance);
+    console.log(receipt);
+    this.setState({ status: 'success' });
+    this.props.token.events.events.emit('event', {type: 'refresh'});
   }
 
   render() {
@@ -55,6 +58,9 @@ export default class AdjustAllowance extends Component {
         <Button onClick={() => this.setAllowance()} disabled={this.state.status === 'pending'}>
           Set Allowance
         </Button>
+        {this.state.status === 'success' && (
+          <p>Allowance updated!</p>
+        )}
       </div>
     );
   }

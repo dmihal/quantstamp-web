@@ -10,6 +10,7 @@ export class TokenProvider extends Component {
 
   state = {
     token: null,
+    listeningToEvents: false,
   }
 
   componentDidMount() {
@@ -26,7 +27,12 @@ export class TokenProvider extends Component {
     const { ethereum } = this.props;
     if (ethereum.address) {
       const token = await getToken(ethereum.web3, ethereum.address);
-      this.setState({ token });
+
+      if (!this.state.listeningToEvents) {
+        token.events.on('event', () => this.loadToken());
+      }
+
+      this.setState({ token, listeningToEvents: true });
     }
   }
 

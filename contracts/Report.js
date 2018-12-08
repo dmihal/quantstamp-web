@@ -46,7 +46,7 @@ Report.requestAudit = async function requestAudit(web3, url, from) {
 }
 
 Report.getReportsFromUser = async function getReportsFromUser(web3, address) {
-  const response = await fetch(`http://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&sort=desc`);
+  const response = await fetch(`https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&sort=desc`);
   const json = await response.json();
   const txIsAuditRequest = tx => tx.to === QUANTSTAMP_ADDRESS && tx.input.indexOf(REQUEST_AUDIT_FN_HASH) === 0;
   const addData = async tx => {

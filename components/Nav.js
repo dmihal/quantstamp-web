@@ -26,6 +26,7 @@ export default () => (
     <Logo type="product" theme="onLight" productName="Web" />
     <ul>
       <NavLink title="Start" path="/" />
+      <NavLink title="QSP Wallet" path="/qsp" />
     </ul>
     <style jsx>{`
       nav {

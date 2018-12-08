@@ -29,6 +29,7 @@ export default ({ children }) => (
         flex-direction: column;
         justify-content: center;
         background: #f7fbff;
+        padding: 10px;
       }
     `}</style>
     <style global jsx>{`

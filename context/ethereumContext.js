@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Link from 'next/link';
 import withContext from './withContext';
+import Web3 from 'web3';
 
 const defaultValue = {
   // allowed values: pending, available, unavailable, locked, wrongNet

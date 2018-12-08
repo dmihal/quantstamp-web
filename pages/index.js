@@ -3,12 +3,12 @@ import Web3 from 'web3';
 import Link from 'next/link';
 import { Button, Notification } from 'qs-ui-lib';
 import Layout from '../layout';
-import { withWallet } from '../context/walletContext';
+import { withEthereum } from '../context/ethereumContext';
 
-@withWallet
+@withEthereum
 export default class Home extends Component {
 
-  walletStatusRenderers = {
+  ethereumStatusRenderers = {
     pending: () => (
       <Notification type='wait' headline='Loading...' />
     ),
@@ -55,13 +55,13 @@ export default class Home extends Component {
   }
 
   render () {
-    const { wallet } = this.props;
+    const { ethereum } = this.props;
     return (
       <Layout>
         <h1>Audit your contract using the QSP Betanet</h1>
         <p>Use QSP tokens to validate your Solidity code, with off-chain computation from auditor nodes.</p>
         <p>Get a permanent, publicly verifiable record that lives forever on Ethereum.</p>
-        {this.walletStatusRenderers[wallet.providerStatus](wallet)}
+        {this.ethereumStatusRenderers[ethereum.providerStatus](ethereum)}
       </Layout>
     );
   }

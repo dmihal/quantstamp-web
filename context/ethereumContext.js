@@ -11,7 +11,7 @@ const defaultValue = {
 };
 const { Provider, Consumer } = React.createContext();
 
-export class WalletProvider extends Component {
+export class EthereumProvider extends Component {
   state = {
     value: defaultValue,
   };
@@ -50,5 +50,5 @@ export class WalletProvider extends Component {
   }
 }
 
-export const withWallet = withContext('wallet', Consumer);
+export const withEthereum = withContext('ethereum', Consumer);
 

@@ -1,8 +1,8 @@
 import { GlobalTypography } from 'qs-ui-lib';
-import { WalletProvider } from '../context/walletContext';
+import { EthereumProvider } from '../context/ethereumContext';
 
 export default ({ children }) => (
-  <WalletProvider>
+  <EthereumProvider>
     {children}
-  </WalletProvider>
+  </EthereumProvider>
 );

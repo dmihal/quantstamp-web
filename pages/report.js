@@ -24,12 +24,17 @@ export default class ReportPage extends Component {
 
   render() {
     const { code, report } = this.state;
+    const vulnerabilities_checked = new Set();
+    report && report.analyzers_reports.forEach(report => report.analyzer.vulnerabilities_checked.forEach(vun => vulnerabilities_checked.add(vun)));
+    const timestamp = report && new Date(report.timestamp * 1000);
     return (
       <Layout>
         <h1>View Report</h1>
+        {timestamp && <div>Audit completed at {timestamp.toString()}</div>}
         {code && (
           <CodeReport code={code} report={report} />
         )}
+        <div>Vunerabilites checked: {Array.from(vulnerabilities_checked.values()).join(', ')}</div>
         <style jsx>{`
           .exchanges {
             display: flex;

@@ -1,4 +1,5 @@
 import report from '../report.json';
+import getABI from './abi';
 
 const QUANTSTAMP_ADDRESS = '0x74814602062af64fd7a83155645ddb265598220e';
 const REQUEST_AUDIT_FN_HASH = '0x25200718';
@@ -34,6 +35,14 @@ export default class Report {
   async getCode() {
     return code;
   }
+}
+
+Report.requestAudit = async function requestAudit(web3, url, from) {
+  const abi = await getABI(QUANTSTAMP_ADDRESS);
+  const contract = new web3.eth.Contract(abi, QUANTSTAMP_ADDRESS);
+  const receipt = await contract.methods.requestAudit(url, '1000000000000000000000').send({ from: from });
+  const auditId = parseInt(receipt.logs[1].data.substr(2, 64), 16);
+  return auditId;
 }
 
 Report.getReportsFromUser = async function getReportsFromUser(web3, address) {

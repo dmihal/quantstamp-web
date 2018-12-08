@@ -4,9 +4,14 @@ import Link from 'next/link';
 import { Button, CodeInputArea, Notification } from 'qs-ui-lib';
 import Layout from '../layout';
 import AdjustAllowance from '../components/AdjustAllowance';
+import Report from '../contracts/Report';
 import { withToken } from '../context/tokenContext';
+import { withEthereum } from '../context/ethereumContext';
+import { withRouter } from 'next/router'
 
+@withRouter
 @withToken
+@withEthereum
 export default class QSP extends Component {
   state = {
     code: '',
@@ -72,8 +77,10 @@ export default class QSP extends Component {
     return this.validateCode(result.SourceCode);
   }
 
-  submit() {
-    console.log(this.state.url);
+  async submit() {
+    const { ethereum } = this.props;
+    const auditId = await Report.requestAudit(ethereum.web3, this.state.url, ethereum.address);
+    this.props.router.push(`/report?id=${auditId}`);
   }
 
   render() {

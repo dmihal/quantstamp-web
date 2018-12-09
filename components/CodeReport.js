@@ -3,14 +3,10 @@ import React, { Component, Fragment } from 'react';
 export default ({ code, report }) => {
   const warningsByLine = {};
   report.analyzers_reports.forEach(report => report.potential_vulnerabilities.forEach(vunerability => {
-    const localVunerability = {
-      name: vunerability.name,
-      description: vunerability.description,
-    };
     vunerability.instances.forEach(instance => {
       const line = instance.start_line;
-      warningsByLine[line] = warningsByLine[line] || [];
-      warningsByLine[line].push(localVunerability);
+      warningsByLine[line] = warningsByLine[line] || {};
+      warningsByLine[line][vunerability.name] = vunerability.description;
     });
   }));
 
@@ -30,7 +26,7 @@ export default ({ code, report }) => {
         return (
           <Fragment key={`frag${lineNum}`}>
             {lineEl}
-            {warningsByLine[lineNum].map(warning => <Warning warning={warning} />)}
+            {Object.entries(warningsByLine[lineNum]).map(([name, description]) => <Warning name={name} description={description} />)}
           </Fragment>
         )
       })}
@@ -57,10 +53,10 @@ class Warning extends Component {
     return (
       <div className="warning">
         <div className="header" onClick={() => this.setState({ collapsed: !this.state.collapsed })}>
-          {this.props.warning.name}
+          {this.props.name}
         </div>
         {this.state.collapsed || (
-          <div>{this.props.warning.description}</div>
+          <div>{this.props.description}</div>
         )}
 
         <style jsx>{`

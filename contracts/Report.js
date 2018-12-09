@@ -1,13 +1,23 @@
-import report from '../report.json';
 import getABI from './abi';
 
 const QUANTSTAMP_ADDRESS = '0x74814602062af64fd7a83155645ddb265598220e';
 const REQUEST_AUDIT_FN_HASH = '0x25200718';
 
 export default class Report {
-  report = null;
+  
+  constructor(id, contract) {
+    this.id = id;
+    this.contract = contract;
+    this.auditor = '0xe685187635499B823d97FFBf16CB0EE34a172c33';
+    this.reportHash = 'ffa98c1186299791f2875442e986cc925c278575423ed9a9e306d8074133dcb7';
+  }
+
+  async isReady() {
+    return await this.contract.methods.isAuditFinished(this.id).call();
+  }
+
   async getReport() {
-    const response = await fetch(`https://cors-anywhere.herokuapp.com/https://s3.amazonaws.com/qsp-protocol-reports-dev/d614a6ae-aac6-480e-af3c-eb59dae1f046.json`);
+    const response = await fetch(`https://cors-anywhere.herokuapp.com/https://s3.amazonaws.com/qsp-protocol-reports-prod/${this.auditor}/${this.reportHash}.json`);
     return await response.json();
   }
 
@@ -18,9 +28,23 @@ export default class Report {
   }
 }
 
-Report.requestAudit = async function requestAudit(web3, url, from) {
+let contract = null;
+async function getContract(web3) {
+  if (contract) {
+    return contract;
+  }
   const abi = await getABI(QUANTSTAMP_ADDRESS);
-  const contract = new web3.eth.Contract(abi, QUANTSTAMP_ADDRESS);
+  contract = new web3.eth.Contract(abi, QUANTSTAMP_ADDRESS);
+  return contract;
+}
+
+Report.getFromId = async function(web3, id) {
+  const contract = await getContract(web3);
+  return new Report(id, contract);
+}
+
+Report.requestAudit = async function requestAudit(web3, url, from) {
+  const contract = await getContract(web3);
   const receipt = await contract.methods.requestAudit(url, '1000000000000000000000').send({ from: from });
   const auditId = parseInt(receipt.logs[1].data.substr(2, 64), 16);
   return auditId;

@@ -23,7 +23,7 @@ export default class QSP extends Component {
 
   async validateCode(code) {
     this.setState({ id: null, err: null, url: null });
-    const response = await fetch(`https://betanet-www.herokuapp.com/contracts`, {
+    const response = await fetch(`https://cors-anywhere.herokuapp.com/https://betanet-www.herokuapp.com/contracts`, {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify({
@@ -55,7 +55,7 @@ export default class QSP extends Component {
   }
 
   async checkStatus(id) {
-    const response = await fetch(`https://betanet-www.herokuapp.com/contracts/${id}`);
+    const response = await fetch(`https://cors-anywhere.herokuapp.com/https://betanet-www.herokuapp.com/contracts/${id}`);
     const json = await response.json();
     this.handleStatus(json.contract);
   }

@@ -4,36 +4,17 @@ import getABI from './abi';
 const QUANTSTAMP_ADDRESS = '0x74814602062af64fd7a83155645ddb265598220e';
 const REQUEST_AUDIT_FN_HASH = '0x25200718';
 
-const code = `pragma solidity ^0.4.17;
-
-contract SendBalance {
-  mapping (address => uint) userBalances;
-  bool withdrawn = false;
-  function getBalance(address u) constant returns (uint) {
-    return userBalances[u];
-  }
-
-  function addToBalance() {
-    userBalances[msg.sender] += msg.value;
-  }
-
-  function withdrawBalance() {
-    if (!(msg.sender.call.value(userBalances[msg.sender])())) {
-      throw;
-    }
-
-    userBalances[msg.sender] = 0;
-  }
-}`;
-
 export default class Report {
   report = null;
   async getReport() {
-    return report;
+    const response = await fetch(`https://cors-anywhere.herokuapp.com/https://s3.amazonaws.com/qsp-protocol-reports-dev/d614a6ae-aac6-480e-af3c-eb59dae1f046.json`);
+    return await response.json();
   }
 
   async getCode() {
-    return code;
+    const report = await this.getReport();
+    const response = await fetch(`https://cors-anywhere.herokuapp.com/${report.contract_uri}`);
+    return await response.text();
   }
 }
 
